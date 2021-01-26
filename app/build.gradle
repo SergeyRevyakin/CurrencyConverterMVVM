@@ -107,6 +107,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     //noinspection GradleDependency
     implementation "androidx.room:room-ktx:$room_version"
+//    implementation "androidx.room:room-coroutines:${room_version}"
 
     //Get currency code
     implementation 'com.neovisionaries:nv-i18n:1.27'

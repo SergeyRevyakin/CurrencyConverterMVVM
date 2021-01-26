@@ -4,25 +4,25 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import ru.serg.currencyconverter.R
 import ru.serg.currencyconverter.databinding.ActivityMainBinding
 import ru.serg.currencyconverter.helper.EndPoints
 import ru.serg.currencyconverter.helper.Resource
 import ru.serg.currencyconverter.helper.Utility
 import ru.serg.currencyconverter.model.Rates
+import ru.serg.currencyconverter.view.history.HistoryFragment
 import ru.serg.currencyconverter.viewmodel.MainViewModel
 import java.util.*
-import kotlin.collections.ArrayList
 
+@InternalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        setTheme(R.style.AppTheme_NoActionBar);
+        setTheme(R.style.AppTheme_NoActionBar)
 
         super.onCreate(savedInstanceState)
 
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             val countryCode = getCountryCode(item.toString())
             val currencySymbol = getSymbol(countryCode)
             selectedItem2 = currencySymbol
-            binding.txtSecondCurrencyName.setText(selectedItem2)
+            binding.txtSecondCurrencyName.text = selectedItem2
         }
     }
 
@@ -106,9 +106,6 @@ class MainActivity : AppCompatActivity() {
                 countries.add(country)
             }
         }
-//        val countries:ArrayList<String> = locales.map {
-//            it.displayCountry
-//        } as ArrayList<String>
 
         countries.sort()
 
@@ -151,6 +148,22 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.txtHistory.setOnClickListener {
+            HistoryFragment(mainViewModel.history).show(supportFragmentManager, "TAG")
+        }
+
+    }
+
+    fun deleteHistory() {
+        mainViewModel.dropDatabase()
+        Snackbar.make(
+            binding.mainLayout,
+            getString(R.string.hisrory_cleared),
+            Snackbar.LENGTH_LONG
+        )
+            .withColor(ContextCompat.getColor(this, R.color.design_default_color_primary_dark))
+            .setTextColor(ContextCompat.getColor(this, R.color.white))
+            .show()
     }
 
     private fun doConversion() {
@@ -174,7 +187,7 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun observeUi() {
-        mainViewModel.data.observe(this, androidx.lifecycle.Observer { result ->
+        mainViewModel.data.observe(this, { result ->
 
             when (result.status) {
                 Resource.Status.SUCCESS -> {
