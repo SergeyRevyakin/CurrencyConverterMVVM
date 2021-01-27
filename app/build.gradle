@@ -13,8 +13,8 @@ android {
         applicationId "ru.serg.currencyconverter"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 100
-        versionName "1.00"
+        versionCode 101
+        versionName '1.01'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

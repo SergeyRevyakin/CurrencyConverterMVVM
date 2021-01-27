@@ -1,6 +1,5 @@
 package ru.serg.currencyconverter.view
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.InternalCoroutinesApi
 import ru.serg.currencyconverter.R
 import ru.serg.currencyconverter.databinding.ActivityMainBinding
 import ru.serg.currencyconverter.helper.EndPoints
@@ -22,7 +20,6 @@ import ru.serg.currencyconverter.view.history.HistoryFragment
 import ru.serg.currencyconverter.viewmodel.MainViewModel
 import java.util.*
 
-@InternalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -67,6 +64,7 @@ class MainActivity : AppCompatActivity() {
             selectedItem1 = currencySymbol
             binding.txtFirstCurrencyName.text = selectedItem1
         }
+        spinner1.requestFocus()
 
         val spinner2 = binding.spnSecondCountry
 
@@ -76,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
         spinner2.setItems(getAllCountries())
 
-        spinner2.setOnItemSelectedListener { view, position, id, item ->
+        spinner2.setOnItemSelectedListener { _, _, _, item ->
             val countryCode = getCountryCode(item.toString())
             val currencySymbol = getSymbol(countryCode)
             selectedItem2 = currencySymbol
@@ -121,7 +119,7 @@ class MainActivity : AppCompatActivity() {
             if (numberToConvert.isEmpty() || numberToConvert == "0") {
                 Snackbar.make(
                     binding.mainLayout,
-                    "Input a value in the first text field, result will be shown in the second text field",
+                    getString(R.string.no_value_input),
                     Snackbar.LENGTH_LONG
                 )
                     .withColor(ContextCompat.getColor(this, R.color.dark_red))
@@ -130,7 +128,7 @@ class MainActivity : AppCompatActivity() {
             } else if (!Utility.isNetworkAvailable(this)) {
                 Snackbar.make(
                     binding.mainLayout,
-                    "You are not connected to the internet",
+                    getString(R.string.no_connection),
                     Snackbar.LENGTH_LONG
                 )
                     .withColor(ContextCompat.getColor(this, R.color.dark_red))
@@ -185,7 +183,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    @SuppressLint("SetTextI18n")
+
     private fun observeUi() {
         mainViewModel.data.observe(this, { result ->
 
@@ -214,7 +212,7 @@ class MainActivity : AppCompatActivity() {
                         val layout = binding.mainLayout
                         Snackbar.make(
                             layout,
-                            "Ooops! something went wrong, Try again",
+                            getString(R.string.something_wrong),
                             Snackbar.LENGTH_LONG
                         )
                             .withColor(ContextCompat.getColor(this, R.color.dark_red))
@@ -229,7 +227,7 @@ class MainActivity : AppCompatActivity() {
                     val layout = binding.mainLayout
                     Snackbar.make(
                         layout,
-                        "Oopps! Something went wrong, Try again",
+                        getString(R.string.something_wrong),
                         Snackbar.LENGTH_LONG
                     )
                         .withColor(ContextCompat.getColor(this, R.color.dark_red))

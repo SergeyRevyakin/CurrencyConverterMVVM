@@ -1,5 +1,8 @@
 package ru.serg.currencyconverter.room
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
 class HistoryRepository(private val historyDao: HistoryDao) {
     val getHistory = historyDao.getAllOperations()
 
@@ -7,7 +10,7 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         historyDao.insert(operation)
     }
 
-    fun dropTable() {
+    suspend fun dropTable() = withContext(Dispatchers.Default) {
         historyDao.dropTable()
     }
 }

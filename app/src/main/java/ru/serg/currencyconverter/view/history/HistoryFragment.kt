@@ -9,12 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_history.*
-import kotlinx.coroutines.InternalCoroutinesApi
 import ru.serg.currencyconverter.R
 import ru.serg.currencyconverter.room.Operation
 import ru.serg.currencyconverter.view.MainActivity
 
-@InternalCoroutinesApi
 class HistoryFragment(private val operationList: LiveData<List<Operation>>) :
     BottomSheetDialogFragment() {
 
@@ -35,7 +33,11 @@ class HistoryFragment(private val operationList: LiveData<List<Operation>>) :
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         operationList.observe(this, {
-            recyclerView.adapter = HistoryAdapter(it)
+            if (it.isNullOrEmpty()) {
+                dismiss()
+            } else {
+                recyclerView.adapter = HistoryAdapter(it)
+            }
         })
 
         delete_history.setOnClickListener {

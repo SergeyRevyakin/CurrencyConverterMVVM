@@ -25,10 +25,6 @@ class HistoryAdapter(
     override fun getItemCount(): Int = operationList.size
 
     class HistoryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//        private val binding = FragmentHistoryBinding.inflate(LayoutInflater.from(itemView.context))
-
-//        private val txtFrom: TextView = itemView.findViewById(R.id.txtFrom)
-//        private val txtTo = itemView.findViewById<TextView>(R.id.txtTo)
 
         fun bind(operation: Operation) = with(itemView) {
             txtFromName.text = operation.fromName

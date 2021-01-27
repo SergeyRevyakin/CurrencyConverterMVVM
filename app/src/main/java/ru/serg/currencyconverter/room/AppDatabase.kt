@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.internal.synchronized
 
 @Database(entities = [Operation::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
@@ -15,7 +13,6 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         var INSTANCE: AppDatabase? = null
 
-        @InternalCoroutinesApi
         fun getAppDatabase(context: Context): AppDatabase? {
             if (INSTANCE == null) {
                 synchronized(AppDatabase::class) {

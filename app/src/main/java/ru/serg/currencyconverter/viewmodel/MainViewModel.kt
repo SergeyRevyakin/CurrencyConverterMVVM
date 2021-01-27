@@ -6,8 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.serg.currencyconverter.helper.Resource
@@ -18,7 +16,6 @@ import ru.serg.currencyconverter.room.AppDatabase
 import ru.serg.currencyconverter.room.HistoryRepository
 import ru.serg.currencyconverter.room.Operation
 
-@InternalCoroutinesApi
 class MainViewModel @ViewModelInject constructor(
     private val mainRepo: MainRepo,
     application: Application
@@ -56,7 +53,7 @@ class MainViewModel @ViewModelInject constructor(
     }
 
     fun dropDatabase() {
-        GlobalScope.launch {
+        viewModelScope.launch {
             historyRepository.dropTable()
         }
     }

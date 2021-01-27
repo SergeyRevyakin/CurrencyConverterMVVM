@@ -16,4 +16,7 @@
     <string name="history">History</string>
     <string name="delete_history">Delete history</string>
     <string name="hisrory_cleared">History cleared!</string>
+    <string name="something_wrong">Ooops! something went wrong, Try again</string>
+    <string name="no_connection">You are not connected to the internet</string>
+    <string name="no_value_input">Input a value in the first text field, result will be shown in the second text field</string>
 </resources>
